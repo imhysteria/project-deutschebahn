@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Delay Prediction</title>
+</head>
+<body>
+
+<h1>Train Delay Prediction</h1>
+
+<form id="predictionForm">
+    <label for="departure">Departure Station:</label>
+    <input type="text" id="departure" name="departure" required>
+
+    <label for="arrive">Arrival Station:</label>
+    <input type="text" id="arrive" name="arrive" required>
+
+    <label for="dayOfWeek">Day of Week:</label>
+    <input type="text" id="dayOfWeek" name="dayOfWeek" required>
+
+    <label for="hourOfDay">Hour of Day:</label>
+    <input type="number" id="hourOfDay" name="hourOfDay" min="0" max="24" required>
+
+    <button type="button" onclick="predictDelay()">Predict Delay</button>
+</form>
+
+<div id="predictionResult"></div>
+
+<script>
+function predictDelay() {
+    var departure = document.getElementById("departure").value;
+    var arrive = document.getElementById("arrive").value;
+    var dayOfWeek = document.getElementById("dayOfWeek").value;
+    var hourOfDay = document.getElementById("hourOfDay").value;
+
+    // Assuming you have a function named predictDelay in your Python script
+    // that communicates with your trained model and returns the prediction result
+    // You can use an AJAX request to send user inputs to the server and get the result
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var result = JSON.parse(xhr.responseText);
+            document.getElementById("predictionResult").innerHTML = result.message;
+        }
+    };
+
+    xhr.open("POST", "/predict_delay");  // Replace with your actual endpoint
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify({departure, arrive, dayOfWeek, hourOfDay}));
+}
+</script>
+
+</body>
+</html>
+Efficient
